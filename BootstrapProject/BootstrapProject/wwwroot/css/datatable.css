@@ -1,0 +1,41 @@
+:root {
+  --ukea-green:#277F71;
+  --ukea-blue:#27617F;
+  --ukea-red:#7F2735;
+  --ukea-purple:#45277F;
+  --ukea-darkgreen: #617F27;
+  --ukea-lowlight:#888b98;
+  --ukea-complement:#804028;
+}
+
+#myTable_wrapper colgroup {
+  display: block;
+}
+#myTable_wrapper tbody > tr:last-child > * {
+  border: none;
+}
+#myTable_wrapper #dataTables_Filter {
+  float: left;
+}
+#myTable_wrapper .paging_full_numbers {
+  display: flex;
+  justify-content: center;
+}
+#myTable_wrapper .paging_full_numbers .current {
+  background-color: var(--ukea-complement);
+  color: white !important;
+}
+#myTable_wrapper .dt-search {
+  float: left;
+  width: 300px;
+}
+#myTable_wrapper .dt-search .dt-input {
+  width: 100%;
+  height: 36px;
+}
+#myTable_wrapper .dt-search label {
+  display: none;
+}
+#myTable_wrapper .dt-info, #myTable_wrapper .dt-length {
+  display: none;
+}

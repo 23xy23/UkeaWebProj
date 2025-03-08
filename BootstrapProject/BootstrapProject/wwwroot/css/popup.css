@@ -1,0 +1,77 @@
+:root {
+  --ukea-green:#277F71;
+  --ukea-blue:#27617F;
+  --ukea-red:#7F2735;
+  --ukea-purple:#45277F;
+  --ukea-darkgreen: #617F27;
+  --ukea-lowlight:#888b98;
+}
+
+.pointer-hover:hover {
+  cursor: pointer;
+}
+
+.popup {
+  position: fixed;
+  z-index: 2000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  justify-content: center; /* Center the popup */
+  align-items: center; /* Center the popup */
+  display: none; /* Use flexbox for centering */
+}
+.popup .highlight-red {
+  color: var(--ukea-red);
+}
+.popup .popup-content {
+  background-color: #fefefe;
+  margin: auto;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px; /* Responsive width */
+  position: relative;
+}
+.popup .popup-content .popup-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+.popup .popup-content .popup-desc {
+  padding: 20px;
+}
+.popup .popup-content .popup-desc p {
+  margin-bottom: 12px;
+}
+.popup .popup-content .popup-desc .lowlight {
+  color: var(--ukea-lowlight);
+  font-size: 12px;
+}
+.popup .popup-content .popup-desc .button-wrapper {
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.popup .popup-content .popup-desc .button-wrapper button {
+  width: 80px;
+  padding: 8px 0px;
+  border: none;
+}
+.popup .popup-content .popup-desc .button-wrapper .btn-red {
+  background-color: var(--ukea-red);
+  color: white;
+}
+.popup .popup-content .popup-desc .button-wrapper .btn-outline-red {
+  border: var(--ukea-red);
+  color: var(--ukea-red);
+}
+
+.pu-delete .popup-header {
+  background-color: var(--ukea-red);
+}

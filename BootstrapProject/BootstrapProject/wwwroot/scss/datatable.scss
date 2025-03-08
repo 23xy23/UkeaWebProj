@@ -1,0 +1,57 @@
+:root{
+    --ukea-green:#277F71;
+    --ukea-blue:#27617F;
+    --ukea-red:#7F2735;
+    --ukea-purple:#45277F;
+    --ukea-darkgreen: #617F27;
+    --ukea-lowlight:#888b98;
+    --ukea-complement:#804028;
+}
+
+
+#myTable_wrapper{
+
+    colgroup{
+        display: block;
+    }
+
+    tbody > tr:last-child>*{
+        border: none;
+    }
+
+    #dataTables_Filter{
+        float: left;
+    }
+
+    .paging_full_numbers{
+        display: flex;
+        justify-content: center;
+
+        .current{
+
+            background-color: var(--ukea-complement);
+            color: white !important;
+
+        }
+    }
+
+    .dt-search{
+        float: left;
+        width: 300px;
+
+        .dt-input{
+            width: 100%;
+            height: 36px;
+        }
+
+        label{
+            display: none;
+        }
+    }
+
+    .dt-info, .dt-length{
+        display: none;
+    }
+
+
+}

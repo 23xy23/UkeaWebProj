@@ -1,0 +1,154 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.nav-link,
+.nav-link:hover {
+  color: #848c9c;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.active-link .nav-link {
+  color: #ffffff;
+}
+
+.side-nav-company-label {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding-left: none;
+}
+
+.dashboard-container {
+  background-color: #eff7f2;
+  margin-top: 0px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.profile-dropdown{
+  left: auto !important;
+  right: 0;
+}
+
+/** Layout.cshtml css **/
+
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+* {
+  font-family: "Inter", sans-serif;
+}
+
+main {
+  flex-grow: 1; /* Takes up remaining space */
+}
+
+.shadow-right {
+  box-shadow: 8px 0 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-bottom {
+  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  padding: 0;
+  margin: 0;
+}
+
+.row > * {
+  padding: 0;
+}
+
+.top-nav-bar {
+  border-bottom: 2px solid #ebebef;
+  width: 100%;
+}
+
+.top-nav-search-input,
+.top-nav-search-button {
+  border: none;
+  transition: none;
+  outline: none;
+}
+
+.top-nav-search-input:focus,
+.top-nav-search-button:focus,
+.btn:focus {
+  border-color: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.top-nav-misc-item-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  fill: #848c9c;
+}
+
+.top-nav-vr .vr {
+  height: 30px;
+  align-self: center;
+}
+
+.btn-secondary {
+  background-color: none;
+  border-color: none;
+}
+
+.side-nav-bar {
+  min-width: 200px;
+  z-index: 1000;
+  border-right: 2px solid #ebebef;
+}
+
+.side-nav-bar-container {
+  padding-left: 12px;
+  padding-right: 12px;
+  height: 100%;
+}
+
+.side-nav-mm-label {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  padding-bottom: 0px;
+}
+
+.side-nav-item-icon {
+  width: 20px;
+  height: 20px;
+  fill: #848c9c;
+  margin-right: 10px;
+}
+
+.active-link {
+  background-color: #277f71;
+  border-radius: 5px;
+}
+
+.active-link svg {
+  fill: #ffffff;
+}

@@ -1,0 +1,75 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-background {
+  background-color: #ebebef;
+}
+
+.gradient-custom-2 {
+  /* fallback for old browsers */
+  background: #fccb90;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(
+    to right,
+    #267d70,
+    #448978,
+    #73a28c,
+    #93b49e
+  );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #267d70, #448978, #73a28c, #93b49e);
+}
+
+#loginBtn{
+  background-color:#73a28c;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100% !important;
+  }
+}
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+  }
+}
+
+@media (min-width: 992px) {
+  /* Adjust this value based on when you want the desktop styling to apply */
+  .gradient-form {
+    height: 100vh; /* Ensure full view height */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+  }
+}
+
+/* Additional styles for centering the form */
+.h-100 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card {
+  width: 100%; /* Adjust width as necessary */
+  max-width: 1600px; /* Maximum width of the card */
+}
+
+body {
+  margin-bottom: 0px;
+}
+

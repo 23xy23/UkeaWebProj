@@ -1,0 +1,385 @@
+﻿@model BootstrapProject.Models.AccountsViewModel
+
+@{
+    Layout = "~/Views/Shared/_NavBarLayout.cshtml";
+    ViewData["Title"] = "Index";
+
+    // Calculate annual revenue and revenue change since last month
+    var totalRevenue = Model.CashFlow.Sum(entry => entry.MonthlyRevenue);
+    var lastMonthRevenue = Model.CashFlow.OrderByDescending(x => x.Month).First().MonthlyRevenue;
+    var secondLastMonthRevenue = Model.CashFlow.OrderByDescending(x => x.Month).Skip(1).First().MonthlyRevenue;
+    double revenueChange = ((double) lastMonthRevenue - (double) secondLastMonthRevenue) / (double) secondLastMonthRevenue * 100;
+
+    // Calculate annual expense and expense change since last month
+    var totalExpense = Model.CashFlow.Sum(entry => entry.MonthlyExpense);
+    var lastMonthExpense = Model.CashFlow.OrderByDescending(x => x.Month).First().MonthlyExpense;
+    var secondLastMonthExpense = Model.CashFlow.OrderByDescending(x => x.Month).Skip(1).First().MonthlyExpense;
+    double expenseChange = ((double) lastMonthExpense - (double) secondLastMonthExpense) / (double) secondLastMonthExpense * 100;
+
+    // Calculate annual profit and profit change since last month
+    var totalProfit = Model.CashFlow.Sum(entry => entry.MonthlyProfit);
+    var lastMonthProfit = Model.CashFlow.OrderByDescending(x => x.Month).First().MonthlyProfit;
+    var secondLastMonthProfit = Model.CashFlow.OrderByDescending(x => x.Month).Skip(1).First().MonthlyProfit;
+    double profitChange = ((double) lastMonthProfit - (double) secondLastMonthProfit) / (double) secondLastMonthProfit * 100;
+
+    // Calculate annual target and target change since last month
+    var totalTarget = Model.CashFlow.Sum(entry => entry.MonthlyTarget);
+    var lastMonthTarget = Model.CashFlow.OrderByDescending(x => x.Month).First().MonthlyTarget;
+    var secondLastMonthTarget = Model.CashFlow.OrderByDescending(x => x.Month).Skip(1).First().MonthlyTarget;
+    double targetChange = ((double) lastMonthTarget - (double) secondLastMonthTarget) / (double) secondLastMonthTarget * 100;
+
+    // Calculate monthly revenue for revenue chart
+    var monthlyRevenueData = Model.CashFlow.OrderBy(x => x.Month).Select(x => x.MonthlyRevenue).ToList(); // Prepare data for the Revenue Chart
+    var revenueDataJson = System.Text.Json.JsonSerializer.Serialize(monthlyRevenueData); // Serialize the data to a JSON array for JavaScript
+
+    // Calculate monthly expense for expense chart
+    var monthlyExpenseData = Model.CashFlow.OrderBy(x => x.Month).Select(x => x.MonthlyExpense).ToList(); // Prepare data for the Expense Chart
+    var expenseDataJson = System.Text.Json.JsonSerializer.Serialize(monthlyExpenseData); // Serialize the data to a JSON array for JavaScript
+
+    // Calculate monthly target
+    var currentMonthTarget = Model.CashFlow.OrderByDescending(x => x.Month).First().MonthlyTarget;
+    var currentMonthRevenue = Model.CashFlow.OrderByDescending(x => x.MonthlyRevenue).First().MonthlyRevenue;
+    double currentMonthProgress = ((double) currentMonthRevenue / (double) currentMonthTarget) * 100;
+    var currentMonthProgressJson = System.Text.Json.JsonSerializer.Serialize(currentMonthProgress);
+
+    // Calculate current financial position components
+    var totalFPAsset = Model.AccountEntries.Where(entry => entry.AccountType == "Assets").Sum(entry => entry.Balance);
+    var totalFPEquity = Model.AccountEntries.Where(entry => entry.AccountType == "Equity").Sum(entry => entry.Balance);
+    var totalFPRevenue = Model.AccountEntries.Where(entry => entry.AccountType == "Revenue").Sum(entry => entry.Balance);
+    var totalFPLiability = Model.AccountEntries.Where(entry => entry.AccountType == "Liabilities").Sum(entry => entry.Balance);
+    var totalFPExpense = Model.AccountEntries.Where(entry => entry.AccountType == "Expenses").Sum(entry => entry.Balance);
+
+    // Calculate accounting equation breakdown
+    double totalFP = (double) totalFPAsset + (double) totalFPEquity + (double) totalFPLiability;
+
+    double assetPortion = ((double) totalFPAsset / totalFP) * 100;
+    var assetPortionJson = System.Text.Json.JsonSerializer.Serialize(assetPortion);
+
+    double liabilityPortion = ((double) totalFPLiability / totalFP) * 100;
+    var liabilityPortionJson = System.Text.Json.JsonSerializer.Serialize(liabilityPortion);
+
+    double equityPortion = ((double) totalFPEquity / totalFP) * 100;
+    var equityPortionJson = System.Text.Json.JsonSerializer.Serialize(equityPortion);
+}
+
+<link rel="stylesheet" href="~/css/accounts.css" asp-append-version="true" />
+
+<div class="page-container">
+    <div class="header-div">
+        <div class="module-header">Company Financial Summary</div>
+        <button class="add-product-btn" onclick="toggleFinancials()"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-eye-slash eye" viewBox="0 0 16 16">
+        <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/>
+        <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
+        <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
+        </svg><p>Hide Financials</p></button>
+    </div>
+
+    <div class="card-container card-container-row-1">
+        <div class="card total-profit-card shadow-bottom financial-card">
+            <div class="title-row-1">Total Revenue</div>
+            <div class="count-row-1 financial-detail" data-original-text="@totalRevenue.ToString("C")">@totalRevenue.ToString("C")</div>
+            <div class="date-row-1">@revenueChange.ToString("N2")% Compared to last month</div>
+        </div>
+        <div class="card total-expense-card shadow-bottom financial-card">
+            <div class="title-row-1">Total Expense</div>
+            <div class="count-row-1 financial-detail" data-original-text="@totalExpense.ToString("C")">@totalExpense.ToString("C")</div>
+            <div class="date-row-1">@expenseChange.ToString("N2")% Compared to last month</div>
+        </div>
+        <div class="card total-profit-card shadow-bottom financial-card">
+            <div class="title-row-1">Total Profit</div>
+            <div class="count-row-1 financial-detail" data-original-text="@totalProfit.ToString("C")">@totalProfit.ToString("C")</div>
+            <div class="date-row-1">@profitChange.ToString("N2")% Compared to last month</div>
+        </div>
+        <div class="card total-target-card shadow-bottom financial-card">
+            <div class="title-row-1">Total Target</div>
+            <div class="count-row-1 financial-detail" data-original-text="@totalTarget.ToString("C")">@totalTarget.ToString("C")</div>
+            <div class="date-row-1">@targetChange.ToString("N2")% Compared to last month</div>
+        </div>
+    </div>
+
+    <div class="card-container card-container-row-2">
+        <div class="card revenue-chart-card shadow-bottom">
+            <div id="revenue-bar-chart"></div>
+        </div>
+        <div class="card expense-chart-card shadow-bottom">
+            <div id="expense-bar-chart"></div>
+        </div>
+        <div class="card target-comparison-card shadow-bottom">
+            <div id="target-comparison-chart"></div>
+        </div>
+    </div>
+
+    <div class="card-container card-container-row-3">
+        <div class="card accounting-equation-card shadow-bottom">
+            <div id="accounting-equation-chart"></div>
+        </div>
+        <div class="card portfolio-card shadow-bottom">
+            <div class="title-row-3">Financial Position</div>
+            <div class="portfolio-items">
+                <div class="card financial-card">
+                    <div class="title-row-3">Asset</div>
+                    <div class="count-row-3 financial-detail" data-original-text="@totalFPAsset.ToString("C")">@totalFPAsset.ToString("C")</div>
+                </div>
+                <div class="card financial-card">
+                    <div class="title-row-3">Expense</div>
+                    <div class="count-row-3 financial-detail" data-original-text="@totalFPExpense.ToString("C")">@totalFPExpense.ToString("C")</div>
+                </div>
+                <div class="card financial-card">
+                    <div class="title-row-3">Revenue</div>
+                    <div class="count-row-3 financial-detail" data-original-text="@totalFPRevenue.ToString("C")">@totalFPRevenue.ToString("C")</div>
+                </div>
+                <div class="card financial-card">
+                    <div class="title-row-3">Liability</div>
+                    <div class="count-row-3 financial-detail" data-original-text="@totalFPLiability.ToString("C")">@totalFPLiability.ToString("C")</div>
+                </div>
+                <div class="card financial-card">
+                    <div class="title-row-3">Equity</div>
+                    <div class="count-row-3 financial-detail" data-original-text="@totalFPEquity.ToString("C")">@totalFPEquity.ToString("C")</div>
+                </div>
+            </div>
+            <button class="portfolio-see-all">See all</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/accounts.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+    function toggleFinancials() {
+        var financials = document.querySelectorAll('.financial-card .financial-detail');
+        financials.forEach(function(element) {
+            if (element.textContent.includes('$')) {
+                element.dataset.originalText = element.textContent;
+                element.textContent = '******';
+            } else {
+                element.textContent = element.dataset.originalText;
+            }
+        });
+    }
+</script>
+
+<script>
+    var revenueData = @Html.Raw(revenueDataJson);
+
+    var options = {
+        series: [{
+        name: "Revenue",
+        data: revenueData
+    }],
+        chart: {
+        height: 200,
+        type: 'line',
+        zoom: {
+        enabled: false
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    markers: {
+        size: 5, // Specifies the size of the markers
+        colors: ['#34AB9A'], // Changes the color of the markers, adjust the color code as needed
+        strokeColors: '#FFF', // Border color of the markers
+        strokeWidth: 2, // Width of the border of the markers
+    },
+    stroke: {
+        curve: 'smooth',
+        colors:['#3BC2AE']
+    },
+    title: {
+        text: 'Revenue',
+        align: 'center'
+    },
+    grid: {
+        row: {
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+        opacity: 0.5
+        },
+    },
+    xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: {
+            rotate: -90,  // Rotates the labels vertically
+            rotateAlways: true  // Ensures labels always stay vertical
+        }
+    },
+    tooltip: {
+        theme: 'light',
+        x: {
+            show: true
+        },
+        y: {
+            formatter: function (val) {
+                return "$" + val.toLocaleString();
+            }
+        },
+        marker: {
+            show: false
+        },
+        style: {
+            fontSize: '12px',
+            fontFamily: undefined,
+            colors: ['#FFF']
+        },
+        fillSeriesColor: false,
+        fixed: {
+            enabled: false,
+            position: 'topRight',
+            offsetX: 0,
+            offsetY: 0
+        }
+    }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#revenue-bar-chart"), options);
+    chart.render();
+</script>
+
+<script>
+    var expenseData = @Html.Raw(expenseDataJson);
+
+    var options = {
+        series: [{
+        name: "Expense",
+        data: expenseData
+    }],
+        chart: {
+        height: 200,
+        type: 'line',
+        zoom: {
+        enabled: false
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    markers: {
+        size: 5, // Specifies the size of the markers
+        colors: ['#A53344'], // Changes the color of the markers, adjust the color code as needed
+        strokeColors: '#FFF', // Border color of the markers
+        strokeWidth: 2, // Width of the border of the markers
+    },
+    stroke: {
+        curve: 'smooth',
+        colors:['#C23B4F']
+    },
+    title: {
+        text: 'Expense',
+        align: 'center'
+    },
+    grid: {
+        row: {
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+        opacity: 0.5
+        },
+    },
+    xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: {
+            rotate: -90,  // Rotates the labels vertically
+            rotateAlways: true  // Ensures labels always stay vertical
+        }
+    },
+    tooltip: {
+        theme: 'light',
+        x: {
+            show: true
+        },
+        y: {
+            formatter: function (val) {
+                return "$" + val.toLocaleString();
+            }
+        },
+        marker: {
+            show: false
+        },
+        style: {
+            fontSize: '12px',
+            fontFamily: undefined,
+            colors: ['#FFF']
+        },
+        fillSeriesColor: false,
+        fixed: {
+            enabled: false,
+            position: 'topRight',
+            offsetX: 0,
+            offsetY: 0
+        }
+    }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#expense-bar-chart"), options);
+    chart.render();
+</script>
+
+<script>
+    var currentProgress = Math.round(@Html.Raw(currentMonthProgressJson));
+
+    var options = {
+        series: [currentProgress],
+        chart: {
+        height: 200,
+        type: 'radialBar'
+    },
+    plotOptions: {
+        radialBar: {
+        hollow: {
+            size: '70%',
+        },
+        },
+    },
+    colors:['#DAA520'],
+    labels: ['Revenue'],
+    title: {
+        text: 'Monthly Target Goal',
+        align: 'center'
+    },
+    };
+
+    var chart = new ApexCharts(document.querySelector("#target-comparison-chart"), options);
+    chart.render();
+</script>
+
+<script>
+    var assetData = @Html.Raw(assetPortionJson);
+    var liabilityData = @Html.Raw(liabilityPortionJson);
+    var equityData = @Html.Raw(equityPortionJson);
+    
+    var options = {
+        series: [assetData, liabilityData, equityData],
+        chart: {
+            type: 'donut',
+    },
+    title: {
+        text: 'Accounting Equation',
+        align: 'center'
+    },
+    legend: {
+        show: false
+    },
+    labels: ['Assets', 'Liabilities', 'Equities'],
+    colors: ['#3BC2AE', '#C23B4F', '#DAA520'],
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 200
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }],
+    tooltip: {
+        y: {
+            formatter: function(value) {
+                return value.toFixed(1) + '%'; // Rounds to 1 decimal point
+            }
+        }
+    }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#accounting-equation-chart"), options);
+    chart.render();
+</script>

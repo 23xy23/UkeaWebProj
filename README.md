@@ -12,43 +12,22 @@ Features
 
 Customer Summary Dashboard
 
-Displays total customers, orders, and calls with percentage changes.
+- Displays total customers, orders, and calls with percentage changes.
 
-Includes a graph showing order trends.
+- Includes a graph showing order trends.
 
-Urgent task list with completion progress.
+- Urgent task list with completion progress.
 
-Adding Customers
-
-*Click the *+ Add Customer button.
-
-Fill in details like Date of Birth, Credit Card Information, and User ID.
-
-Select a User ID from the dropdown list.
-
-Adding Tasks
-
-Assign tasks to customers using the + Add Tasks button.
-
-Select Customer ID, Task ID, and Employee ID.
-
-Set a due date and submit the form.
-
-Customer Reviews Management
-
-Displays customer reviews with ratings.
-
-Allows deletion of reviews.
 
 Technologies Used
 
-Frontend: React.js
+- Frontend: React.js
 
-Backend: Django (REST API)
+- Backend: Django (REST API)
 
-Database: PostgreSQL / MySQL
+- Database: PostgreSQL / MySQL
 
-Architecture: MVC pattern
+- Architecture: MVC pattern
 
 Screenshots
 

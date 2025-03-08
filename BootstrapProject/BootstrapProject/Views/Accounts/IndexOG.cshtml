@@ -1,0 +1,122 @@
+﻿@model IEnumerable<AccountEntries>
+@{
+    Layout = "~/Views/Shared/_NavBarLayout.cshtml";
+    ViewData["Title"] = "Index";
+
+    // Find total revenue
+    var totalRevenue = Model.Where(entry => entry.AccountType == "Revenue").Sum(entry => entry.Balance);
+
+    // Find total revenue
+    var totalExpense = Model.Where(entry => entry.AccountType == "Expenses").Sum(entry => entry.Balance);
+
+    // Find total profit
+    var totalProfit = totalRevenue - totalExpense;
+
+    // Find total asset
+    var totalAsset = Model.Where(entry => entry.AccountType == "Assets").Sum(entry => entry.Balance);
+
+    // Find total liability
+    var totalLiability = Model.Where(entry => entry.AccountType == "Liabilities").Sum(entry => entry.Balance);
+
+    // Find total equity
+    var totalEquity = Model.Where(entry => entry.AccountType == "Equity").Sum(entry => entry.Balance);
+}
+
+<link rel="stylesheet" href="~/css/accounts.css" asp-append-version="true" />
+
+<div class="page-container">
+    <div class="header-div">
+        <div class="module-header">Company Financial Summary</div>
+        <button class="add-product-btn"><p class="plus">+</p> <p>Add Transaction Entry</p></button>
+    </div>
+
+    <div class="card-container">
+        <div class="card green-card shadow-bottom">
+            <div class="title">Total Revenue</div>
+            <div class="information">
+                <div class="count">@totalRevenue.ToString("C")</div>
+                <div class=date>+12.95% from last month</div>
+            </div>
+        </div>
+        <div class="card red-card shadow-bottom">
+            <div class="title">Total Expense</div>
+            <div class="information">
+                <div class="count">@totalExpense.ToString("C")</div>
+                <div class=date>+5.33% from last month</div>
+            </div>
+        </div>
+        <div class="card blue-card shadow-bottom">
+            <div class="title">Total Profit</div>
+            <div class="information">
+                <div class="count">@totalProfit.ToString("C")</div>
+                <div class=date>+10.32% from last month</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card shadow-bottom">
+            <canvas id="revenueOverTime"></canvas>
+        </div>
+        <div class="card blue-card shadow-bottom">
+            <div class="title">Financial Deadlines</div>
+            <div class="deadline-list">
+                <div class="count">Internal Audit: 15 August 2024</div>
+                <div class="count">Accounts Team AGM: 03 September 2024</div>
+                <div class="count">Cook Books: 28 October 2024</div>
+                <div class="count">Call Saul: 06 November 2024</div>
+                <div class="count">External Audit: 27 December 2024</div>
+                <div class=date>+41.32% from last month</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card green-card shadow-bottom">
+            <div class="title">Total Assets</div>
+            <div class="information">
+                <div class="count">@totalAsset.ToString("C")</div>
+                <div class=date>+41.32% from last month</div>
+            </div>
+        </div>
+        <div class="card red-card shadow-bottom">
+            <div class="title">Total Liabilities</div>
+            <div class="information">
+                <div class="count">@totalLiability.ToString("C")</div>
+                <div class=date>+23.59% from last month</div>
+            </div>
+        </div>
+        <div class="card blue-card shadow-bottom">
+            <div class="title">Total Equities</div>
+            <div class="information">
+                <div class="count">@totalEquity.ToString("C")</div>
+                <div class=date>+12.63% from last month</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('revenueOverTime').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mar 2023', 'Jun 2023', 'Sep 2023', 'Dec 2023'],
+            datasets: [{
+                label: 'Revenue',
+                data: [12000, 19000, 30000, 50000],
+                backgroundColor: 'rgba(39, 126, 113, 0.2)',
+                borderColor: 'rgba(148, 180, 159, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

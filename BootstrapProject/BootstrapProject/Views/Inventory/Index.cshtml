@@ -1,0 +1,290 @@
+@model BootstrapProject.Models.InventoryViewModel
+@{
+    Layout = "~/Views/Shared/_NavBarLayout.cshtml";
+    ViewData["Title"] = "Inventory Page";
+}
+
+
+    <link rel="stylesheet" href="~/css/inventory.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/popup.css" asp-append-version="true" />
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css" />
+    <link rel="stylesheet" href="~/css/datatable.css" asp-append-version="true" />
+    
+@* 
+<script href="https://cdn.datatables.net/2.0.7/js/dataTables.js" asp-append-version="true"></script>
+<script href="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js" asp-append-version="true"></script>
+<script href="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js" asp-append-version="true"></script>
+<script href="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" asp-append-version="true"></script>>
+<script href="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" asp-append-version="true"/></script>
+<script href="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" asp-append-version="true"></script>
+<script href="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js" asp-append-version="true"></script>
+<script href="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js" asp-append-version="true"></script>
+
+ *@
+
+
+
+
+
+
+<div class="page-container">
+    <div class="header-div">
+        <div class="module-header">Inventory Summary</div>
+        <button onclick="window.location.href='@Url.Action("Create", "Inventory")'" class="add-product-btn"><p class="plus">+</p> <p>Add Product</p></button>
+    </div>
+
+    <div class="card-container">
+        <div class="card cat-card shadow-bottom">
+            <div class="title">Categories</div>
+            <div class="information">
+                <div class="count">Total (@Model.TotalCategories items)</div>
+                <div class=date>Last Week</div>
+            </div>
+        </div>
+        <div class="card prod-card shadow-bottom">
+            <div class="title">Total Products</div>
+            <div class="information">
+                <div class="count">Total @Model.TotalProducts</div>
+                <div class=date>Last Week</div>
+            </div>
+
+        </div>
+        <div class="card stock-card shadow-bottom">
+            <div class="title">Low Stock</div>
+            <div class="information">
+                <div class="count">Total (@Model.LowStockCount items)</div>
+                <div class=date>Last Week</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="inventory-container shadow-bottom">
+        <div class="header-div">Inventory Items</div>
+        <div class="search-container">
+            <div class="search-bar"></div>
+            <div class="filter"></div>
+            <div class="date"></div>
+            <div class=export></div>
+        </div>
+
+        <div class="inventory-list">
+            <table id="myTable" class="table" style="width:100%">
+                <thead class="d-none-768">
+                    <tr>
+                        <th>
+                            Product
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th>
+                            SKU
+                        </th>
+                        <th class="text-center">
+                            In-Stock
+                        </th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Total Value</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                            @foreach(var item in Model.InventoryItems)
+                            {
+                            <tr>
+                                <td width="25%">
+                                    <div class="img-wrapper">
+                                        <img  class="" src="@item.imageUrl" alt="black chair">
+                                    </div>
+                                    <div class="mobile-description">
+                                        <div class=prodname><p>@item.ProductName</p><p class="prodCat d-none">@item.Category.CategoryName</p></div> 
+                                        <p class="prodSKU d-none">@item.SKU</p>
+                                        <p class="prodCount d-none">Quantity: @item.Quantity</p>
+                                        <p class="prodPrice d-none">$@item.UnitPrice</p>
+                                        <div class="stock-level-icon d-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                                            </svg>
+                                        </div>
+                                    </div>                        </td>
+                                <td width="10%" class="d-none-768">
+                                    @item.Category.CategoryName
+                                </td>
+                                <td width="15%" class="d-none-768">
+                                    @item.SKU
+                                </td>
+                                <td width="10%" class="text-center d-none-768">
+                                    @item.Quantity
+                                </td>
+                                <td width="10%" class="text-center d-none-768">
+                                    $@item.UnitPrice
+                                </td>
+                                <td width="15%" class="text-center d-none-768">
+                                    $@(item.UnitPrice * item.Quantity)
+                                </td>
+                                <td width="15%" class="d-none-768">
+                                    <div class="action-wrapper">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-100 bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                            <path class="icon-hover" d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                        </svg>    
+                                        <div class="action-list-wrapper">
+                                            <ul class="action-list shadow-bottom">
+                                                <li class="audit" onclick="passProductID('@item.ProductID', 'audit')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
+                                                    <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0M7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0"/>
+                                                    </svg>
+                                                    <p>Audit</p>
+                                                </li>
+                                                <li class="edit" onclick="passProductID('@item.ProductID', 'edit')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                                                    </svg>
+                                                    <p>Edit</p>
+                                                </li>
+                                                <li class="delete openPopupDeleteBtn" onclick="passProductID('@item.ProductID', 'delete')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                                    </svg>
+                                                    <p>Delete</p>
+                                                </li>
+                                            </ul>   
+                                        </div>         
+                                    </div>
+                                </td>
+                            </tr>    
+                            }  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="popup" class="popup pu-delete">
+    <div class="popup-content">
+        <div class="popup-header">
+            <p>Delete Product</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="pointer-hover closePopupBtn bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+        </div>
+        <div id="product-desc" class="popup-desc">
+            <p>Are you sure you want to delete <span class="highlight-red">Black Chair</span> ?</p>
+            <p class="lowlight">Category: Chair</p>
+            <p class="lowlight">SKU: AMX-236264</p>
+            <p class="lowlight">Quantity: 230</p>
+            <p class="lowlight">Unit Price: $10</p>
+            <p class="lowlight">Total Value: $2300</p>
+            <div class=button-wrapper>
+                <button class="deleteProductButton btn-yes pointer-hover btn-red">Yes</button>
+                <button class="closePopupBtn pointer-hover btn-no btn-outline-red">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+
+    var table = $('#myTable').DataTable({
+        pageLength : 5,
+        lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+        language: {
+            searchPlaceholder: "Search Products",
+            search: "",
+        },
+        @* layout: {
+            topStart:{
+                buttons: ['excel']
+            }
+        } *@
+    })
+
+    $(document).ready(function(){
+        $('#myTable').on('click', '.action-wrapper', function() {
+            console.log("Enter action-wrapper");
+            event.stopPropagation();
+            $(this).find('.action-list').addClass('visible');
+        });
+
+        $('#myTable').on('mouseleave', '.action-wrapper', function() {
+            $(this).find('.action-list').removeClass('visible');
+        });
+
+        $('#myTable').on('click', '.openPopupDeleteBtn', function() {
+            event.stopPropagation();
+            $('.pu-delete').css('display', 'flex');
+        });
+    })
+
+           
+    $('.pu-delete').on('click', '.closePopupBtn', function() {
+        $('.pu-delete').css('display', 'none');
+    });
+
+    $('.pu-delete').on('click','.deleteProductButton', function() {
+
+            var deleteID = $('.deleteProductButton').data("id");
+
+            $.ajax({
+                url: '/Inventory/Delete/' + deleteID,
+                type: 'DELETE',
+                success: function (result) {
+                    // Refresh the page or update the UI as needed
+                    location.reload(); // For example, you can reload the page
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(error);
+                }
+            });
+
+        $('.pu-delete').css('display', 'none');
+    });
+
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#popup')) {
+            $('.pu-delete').css('display', 'none');
+        }
+    });
+});
+
+    function passProductID(productId, type) {
+            
+            if(type === 'delete'){
+
+                // Make AJAX call to get product data
+                $.ajax({
+                    url: '/Inventory/GetProductData', // URL to your controller action
+                    type: 'GET',
+                    data: { productId: productId },
+                    success: function(data) {
+                        // Populate data into <p> tags
+                        $('#product-desc').html(`<p>Are you sure you want to delete <span class="highlight-red">${data.productName}</span> ?</p>                                  
+                                                    <p class="lowlight">Category: ${data.category.categoryName}</p>
+                                                    <p class="lowlight">SKU: ${data.sku}</p>
+                                                    <p class="lowlight">Quantity: ${data.quantity}</p>
+                                                    <p class="lowlight">Unit Price: $${data.unitPrice}</p>
+                                                    <p class="lowlight">Total Value: $${data.unitPrice*data.quantity}</p>
+                                                    <div class=button-wrapper>
+                                                        <button data-id=${productId} class="deleteProductButton btn-yes pointer-hover btn-red">Yes</button>
+                                                        <button class="closePopupBtn pointer-hover btn-no btn-outline-red">No</button>
+                                                    </div>
+                                                    ` 
+                        );
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching product data:', error);
+                    }
+                });
+            }else{
+                window.location.href = 'Inventory/Edit/' + productId;
+            }
+    }
+</script>

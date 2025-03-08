@@ -1,0 +1,374 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+
+.page-container{
+    padding: 20px;
+    background-color: #eff7f2;
+}
+
+.d-none{
+    display: none;
+}
+
+.header-div{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 12px;
+
+    .module-header{
+        font-size:24px;
+    }
+
+    .add-card-btn{
+        padding: 4px 16px;
+        background-color: white; 
+        color: #267d70; 
+        border: 2px solid #267d70;
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: center;
+        transition: all .2s ease-in;
+
+        .plus{
+            font-size: 24px;
+        }
+    }
+
+    .add-card-btn:hover{
+        background-color: #267d70;
+        color: white; /* White text color */
+    }
+}
+
+.card-container{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 26px;
+    gap: 26px; /* Adds space between the boxes */ 
+    .card{
+        flex:1;
+        padding: 20px;
+        color: white; /* White text color */
+        background-color: white;
+        
+        .title{
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .information{
+            display: flex;
+            justify-content: space-between; /* Distribute space between left and right text */  
+            align-items: flex-end; /* Align text to the bottom of the container */
+            
+            .count{
+                color: #888b98;
+                font-size:16px;
+            }
+
+            .date{
+                color: #b6b9be;
+                font-size: 10px;
+            }
+        }
+    }
+
+    .cat-card{
+        .title{
+            color:#45277F;
+        }
+    }
+
+    .prod-card{
+        .title{
+            color:#7F2735;
+        }
+    }
+
+    .stock-card{
+        .title{
+            color:#617F27;
+        }
+    }
+}
+
+.customer-container{
+    padding: 20px;
+    background-color: white;
+
+    .header-div{
+        font-size: 16px;
+    }
+
+    .customer-list{
+        font-size: 14px;
+
+        th{
+        }
+
+        thead{
+            
+            th{
+                padding:14px ;
+            }
+            tr{
+                color: white;
+                font-size: 12px;
+                background-color:#277f7166;
+            }
+        }
+
+        tbody{
+
+            td{
+                padding:20px ;
+            }
+
+            .action-wrapper:hover .action-list-wrapper{
+                opacity:1;
+            }
+
+            .action-wrapper{
+                position: relative;
+                z-index: 1;
+
+                
+                .action-list-wrapper{
+                    position: absolute;
+                    left: 50%;  
+                    top:-10%;
+                    z-index: 2;
+                    transform: translateX(-50%);
+                    list-style-type: none;
+                    font-size: 16px;
+                    width: 160px;
+                    transition: all .2s ease-in;
+                    opacity: 0;
+                }
+
+                .action-list{
+                    background-color: white;
+
+                    li{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 12px 18px;
+                        transition: all .2s ease-in;
+
+                        svg{
+                            width: 16px;
+                            height: 16px;
+                        }
+
+                        p{
+                            
+                        }
+                    }
+
+                    .edit:hover{
+                        background-color: #32C9CD;
+                        color: white;
+                    }
+
+                    .delete:hover{
+                        background-color:#CD3632;
+                        color: white;
+                    }
+                }
+            }
+
+            tr{
+                svg{
+                    width: 100%;
+                }
+
+                transition: all .2s ease-in;
+                border:1px solid #f0f0f0;
+                vertical-align: baseline;
+            }
+
+            tr:hover{
+                transform: scale(1.02);
+                box-shadow: 2px 2px 12px rgba(0,0,0,0.2), -1px -1px 8px rgba(0,0,0,0.2);
+                background-color: #f5f5f5;
+                cursor: pointer;
+            }
+
+            tr > :first-child{
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                width: 100%;
+                align-items: center;
+
+                .img-wrapper{
+                    width: 50px;
+                    height: 50px;
+
+                    img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 769px) {
+
+    .d-none-768{
+        display: none;
+    }
+
+    .page-container{
+        padding: 12px;
+    }
+
+    .header-div{
+        padding:4px;
+        .module-header{
+            font-size:16px;
+        }
+    
+        .add-product-btn{
+            font-size: 10px;
+            padding: 2px 8px;
+            gap: 8px;
+    
+            .plus{
+                font-size: 20px;
+            }
+        }
+    
+        .add-product-btn:hover{
+            background-color: #267d70;
+            color: white; /* White text color */
+        }
+    }
+
+    .card-container{
+        gap: 8px;
+
+        .card{
+            padding: 10px;
+
+            .title{
+                margin-bottom: 6px;
+                font-size: 12px;
+            }
+
+            .information{
+                display: block;
+                .count{
+                    font-size:10px;
+                }
+
+                .date{
+                    font-size: 7px;
+                }
+            }
+        }
+    }
+
+    .customer-container{
+
+        .header-div{
+        }
+
+        .customer-list{
+
+            tbody{
+                td{
+                    padding: 0;
+                }
+
+                tr{
+                    border: none;
+                }
+
+
+                tr> :first-child{
+                    gap: 0px;
+                    margin-bottom: 8px;
+                    border: 1px solid #f0f0f0;
+                    
+
+                    .img-wrapper{
+                        width: 20%;
+                        height: 70px;
+
+                    }
+                    .mobile-description{
+                        position: relative;
+                        width: 80%;
+                        margin: 0px 10px;
+
+
+                            .prodname{
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: baseline;
+                                font-size: 12px;
+                                margin-bottom: 8px;
+
+                                .prodCat{
+                                    font-size: 10px;
+                                    color: #888b98;
+                                    display: block !important;
+                                }
+                            }
+
+                            .prodSKU, .prodCount, .prodPrice, .stock-level-icon{
+                                font-size: 7px;
+                                color: #888b98;
+                                display: block !important;
+                            }          
+
+                            .stock-level-icon{
+                                position: absolute;
+                                right: 0;
+                                bottom: 0;
+
+                                .bi-caret-down-fill{
+                                    color:#7F2735;
+                                }
+
+                                .bi-caret-up-fill{
+                                    color: #267d70;
+                                }
+                            }
+                    }
+                }
+            }
+
+        }
+    }
+}

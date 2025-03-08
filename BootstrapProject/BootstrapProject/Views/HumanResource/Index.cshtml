@@ -1,0 +1,215 @@
+@{
+    Layout = "~/Views/Shared/_NavBarLayout.cshtml";
+    ViewData["Title"] = "Human Resources Page";
+}
+
+<link rel="stylesheet" href="~/css/HR.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/popup.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css" />
+    <link rel="stylesheet" href="~/css/datatable.css" asp-append-version="true" />
+
+<div class="page-container">
+    <div class="header-div">
+        <div class="module-header">Human Resources Summary</div>
+    </div>
+
+    <div class="card-container card-container-row-1">
+        <div class="chart card shadow-bottom">
+            <canvas id="employeeTypeChart"></canvas>
+        </div>
+
+        <div class="card total-employees-card shadow-bottom">
+            <div class="title-row-1">Total Employee</div>
+            <div class="count-row-1">@Model.totalEmployees</div>
+            <div class="date-row-1">+1% from last month</div>
+        </div>
+
+        <div class="card gross-salary-card shadow-bottom">
+            <div class="title-row-1">Gross Salary</div>
+            <div class="count-row-1">$@Model.grossSalary</div>
+            <div class="date-row-1">-0.12% from last month</div>
+        </div>
+    </div>
+
+    <div class="header-div" style="margin-left:80%">
+        <button onclick="window.location.href='@Url.Action("NewEmployee","HumanResource")'" class="add-product-btn"><p class="plus">+</p><p>Add New Employee</p></button>
+    </div>
+    
+    <div class="inventory-container card shadow-bottom">
+        <div class="header-div" style="font-weight:bold">List of Employees</div>
+        <div class="search-container">
+            <div class="search-bar"></div>
+            <div class="filter"></div>
+            <div class="date"></div>
+            <div class=export></div>
+        </div>
+
+        <div class="employee-list">
+            <table id="myTable" class="table" style="width:100%">
+                <thead class="d-none-768">
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Role</th>
+                        <th class="text-center">Basic Salary</th>                   <!--basic salary is w/o cpf deduction-->
+                        <th class="text-center">CPF Contributions</th>
+                        <th class="text-center">Net Salary</th>                     <!--net salary is salary after cpf deduction-->
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in @Model.allEmployees) {
+                        <tr onclick="window.location.href='@Url.Action("Login", "Login")'">
+                            <td width="20%">@x.employeeId</td>
+                            <td width="20%">@x.name</td>
+                            <td width="15%">@x.employeeTitle</td>
+                            <td width="15%" class="text-center d-none-768">$@x.salary</td>
+                            <td width="15%" class="text-center d-none-768">$@x.cpfContribution</td>
+                            <td width="15%" class="text-center d-none-768">$@x.netSalary</td>
+                            <td width="10%" class="d-none-768">
+                                <div class="action-wrapper">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-100 bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                        <path class="icon-hover" d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                    </svg>
+                                    <div class=action-list-wrapper>
+                                        <ul class="action-list shadow-bottom">
+                                            <li class="edit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                                                </svg>
+                                                <a asp-action="EditEmployee"> Edit </a>
+                                            </li>
+                                            <!-- delete function still not working -->
+                                            <li class="delete openPopupDeleteBtn" onclick="passEmployeeID('@x.employeeId')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                                    </svg>
+                                                    <p>Delete</p>
+                                            </li>
+                                        </ul>   
+                                    </div>                
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="popup" class="popup pu-delete">
+    <div class="popup-content">
+        <div class="popup-header">
+            <p>Delete Employee</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="pointer-hover closePopupBtn bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+        </div>
+        <div class="popup-desc">
+            @foreach (var x in @Model.allEmployees) {
+                <p>Are you sure you want to delete <span class="highlight-red">@x.name</span> ?</p>
+            }
+            <div class=button-wrapper>
+                <button class="deleteProductButton btn-yes pointer-hover btn-red">Yes</button>
+                <button class="closePopupBtn pointer-hover btn-no btn-outline-red">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+<script>
+    @* 
+        @foreach (var x in @Model.allTitles){
+            var title = x.title;
+            var count = x.count;
+        }
+     *@
+    var ctx = document.getElementById('employeeTypeChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'pie', // Using 'pie' for a solid pie chart
+        data: {
+            labels: ['Manager', 'Admin'], // Categories
+            datasets: [{
+                label: 'Employee Type',
+                data: [30, 10], // Data for each category
+                backgroundColor: [
+                    'rgba(184, 224, 184, 0.8)', // Lighter green for Manager
+                    'rgba(130, 170, 130, 0.8)' // Darker green for Admin
+                ],
+                borderColor: [
+                    'rgba(184, 224, 184, 1)', // Same as background but opaque for border
+                    'rgba(130, 170, 130, 1)' // Same as background but opaque for border
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: 'black'  // Adjust the font color if necessary
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                }
+            },
+        }
+    });
+</script>
+
+<script>
+    $('.openPopupDeleteBtn').on('click', function() {
+        event.stopPropagation();
+        $('.pu-delete').css('display', 'flex');
+    });
+
+    $('.closePopupBtn').on('click', function() {
+        $('.pu-delete').css('display', 'none');
+    });
+
+
+    $('.deleteProductButton').on('click', function() {
+
+            var deleteID = $('.deleteProductButton').data("id");
+
+            $.ajax({
+                url: '/HumanResource/Delete/' + deleteID,
+                type: 'DELETE',
+                success: function (result) {
+                    // Refresh the page or update the UI as needed
+                    location.reload(); // For example, you can reload the page
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(error);
+                }
+            });
+
+        $('.pu-delete').css('display', 'none');
+    });
+
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#popup')) {
+            $('.pu-delete').css('display', 'none');
+        }
+    });
+});
+
+    function passEmployeeID(employeeId) {
+            $('.deleteProductButton').data("id", employeeId);
+    }
+</script>

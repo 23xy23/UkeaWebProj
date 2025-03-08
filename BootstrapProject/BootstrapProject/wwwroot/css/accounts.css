@@ -1,0 +1,173 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym,
+address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt,
+var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot,
+thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu,
+nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.page-container {
+  padding: 20px;
+  background-color: #eff7f2;
+}
+
+.d-none {
+  display: none;
+}
+
+.header-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+.header-div .module-header {
+  font-size: 24px;
+}
+.header-div .add-product-btn {
+  padding: 4px 16px;
+  background-color: white;
+  color: #267d70;
+  border: 2px solid #267d70;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  transition: all 0.2s ease-in;
+}
+.header-div .add-product-btn:hover {
+  background-color: #267d70;
+  color: white; /* White text color */
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px; /* Adds space between the boxes */
+}
+.card-container .card {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+}
+.card-container-row-1 .card .title-row-1 {
+  color: #888b98;
+  font-size: 14px;
+  font-weight: bold;
+}
+.card-container-row-1 .card .count-row-1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.card-container-row-1 .card .date-row-1 {
+  color: #a7a9af;
+  font-size: 12px;
+}
+
+.card-container .revenue-chart-card {
+  flex: 3;
+}
+.card-container .expense-chart-card {
+  flex: 3;
+}
+.card-container .target-comparison-card {
+  flex: 2;
+}
+.card-container-row-3 .card {
+  padding: 15px 8px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-container .portfolio-card {
+  flex: 3;
+}
+.card-container .portfolio-card div {
+  display: inline-flex;
+}
+.card-container .portfolio-card .portfolio-items {
+  flex-direction: row;
+  gap: 10px;
+}
+.card-container .portfolio-card .information {
+  display: inline;
+  justify-content: space-between; /* Distribute space between left and right text */
+  align-items: flex-end; /* Align text to the bottom of the container */
+}
+.card-container .portfolio-card .title-row-3 {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.card-container-row-3 .portfolio-card .portfolio-items {
+  margin-bottom: 10px;
+}
+.card-container .portfolio-card .portfolio-items .card {
+    min-width: 135px;
+}
+.card-container-row-3 .portfolio-card .portfolio-items .card .title-row-3 {
+  color: #888b98;
+  font-size: 14px;
+  font-weight: bold;
+}
+.card-container-row-3 .portfolio-card .portfolio-items .card .count-row-3 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+@media (max-width: 769px) {
+  .d-none-768 {
+    display: none;
+  }
+  .page-container {
+    padding: 12px;
+  }
+  .header-div {
+    padding: 4px;
+  }
+  .header-div .module-header {
+    font-size: 16px;
+  }
+  .header-div .add-product-btn {
+    font-size: 10px;
+    padding: 2px 8px;
+    gap: 8px;
+  }
+  .header-div .add-product-btn .plus {
+    font-size: 20px;
+  }
+  .header-div .add-product-btn:hover {
+    background-color: #267d70;
+    color: white; /* White text color */
+  }
+  .card-container {
+    gap: 8px;
+  }
+  .card-container .card {
+    padding: 10px;
+  }
+  .card-container .card .title {
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  .card-container .card .information {
+    display: block;
+  }
+  .card-container .card .information .count {
+    font-size: 10px;
+  }
+  .card-container .card .information .date {
+    font-size: 7px;
+  }
+}

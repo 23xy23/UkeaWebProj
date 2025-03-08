@@ -1,0 +1,6 @@
+{
+    "dataworkspace.excludedProjects": [
+        "BootstrapProject/BootstrapProject/UkeaData/UkeaData.sqlproj",
+        "ukea.database.windows.net/ukea.database.windows.net.sqlproj"
+    ]
+}
