@@ -1,4 +1,4 @@
-# Web Programming School Project
+# Web Programming
 
 The UKEA ERP Inventory System streamlines inventory, customer, accounts, and employee management with real-time tracking and role-based access control. Built on the MVC framework with security features like 2FA, it ensures scalability and performance. It optimizes decision-making, reduces costs, and improves operational efficiency. Future plans include mobile access and customizable dashboards.
 
